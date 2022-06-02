@@ -1,75 +1,41 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useCallback } from 'react';
+import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Notiflix from 'notiflix';
+
+import actionCreators from 'redux/contacts/contactsActionCreators';
+import { getContacts } from 'redux/contacts/contactsSelectors';
 
 import Phonebook from 'components/Phonebook';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter';
 
-import { userContacts } from 'components/Phonebook/contacts';
-import { nanoid } from 'nanoid';
-
 const App = () => {
-  const [state, setState] = useState({
-    contacts: [...userContacts],
-    filter: '',
-  });
+  const [filter, setFilter] = useState('');
 
-  const firstRender = useRef(true);
+  const contacts = useSelector(getContacts, shallowEqual);
+  console.log(contacts);
+  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (firstRender.current) {
-      const data = localStorage.getItem('contacts');
-      const parsedContacts = JSON.parse(data);
-      if (data?.length) {
-        setState(prevState => ({
-          ...prevState,
-          contacts: [...parsedContacts],
-        }));
-      }
-      firstRender.current = false;
-    }
-  }, []);
-  useEffect(() => {
-    if (!firstRender.current) {
-      const newItems = JSON.stringify(state.contacts);
-      localStorage.setItem('contacts', newItems);
-    }
-  }, [state.contacts]);
-  const addContact = data => {
-    const { contacts } = state;
+  const addContact = contact => {
+    const action = actionCreators.addContact(contact);
 
-    if (contacts.find(({ name }) => name === data.name)) {
+    if (contacts.find(({ name }) => name === contact.name)) {
       Notiflix.Report.warning('Oops', 'You already have this contact');
       return;
     }
 
-    setState(prevState => {
-      const newContact = { ...data, id: nanoid() };
+    dispatch(action);
+  };
 
-      return {
-        contacts: [...prevState.contacts, newContact],
-        filter: '',
-      };
-    });
-  };
-  const updateContacts = contactId => {
-    setState(prevState => {
-      return {
-        ...prevState,
-        contacts: prevState.contacts.filter(
-          contact => contact.id !== contactId,
-        ),
-      };
-    });
-  };
-  const filterContact = e => {
-    const { name, value } = e.target;
+  const removeContact = id => {
+    const action = actionCreators.deleteContact(id);
 
-    setState(prevState => ({ ...prevState, [name]: value }));
+    dispatch(action);
   };
+
+  const changeFilter = useCallback(({ target }) => setFilter(target.value), []);
+
   const getFilteredContacts = () => {
-    const { contacts, filter } = state;
-
     if (!filter) {
       return contacts;
     }
@@ -80,7 +46,8 @@ const App = () => {
 
     return filteredContacts;
   };
-  const contactItems = getFilteredContacts();
+
+  const filteredContacts = getFilteredContacts();
   return (
     <div
       style={{
@@ -98,8 +65,8 @@ const App = () => {
       >
         Contacts
       </h2>
-      <Filter filterQuery={filterContact} />
-      <ContactList contacts={contactItems} onDelete={updateContacts} />
+      <Filter handleChange={changeFilter} filter={filter} />
+      <ContactList contacts={filteredContacts} onDelete={removeContact} />
     </div>
   );
 };

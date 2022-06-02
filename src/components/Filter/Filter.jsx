@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import styles from './Filter.module.css';
 
-const Filter = ({ filterQuery }) => {
+const Filter = ({ filter, handleChange }) => {
   return (
     <div>
       <label htmlFor="" className={styles.label}>
@@ -10,9 +10,10 @@ const Filter = ({ filterQuery }) => {
       </label>
       <input
         type="text"
+        value={filter}
         name="filter"
         className={styles.input}
-        onChange={filterQuery}
+        onChange={handleChange}
       />
     </div>
   );
@@ -20,6 +21,10 @@ const Filter = ({ filterQuery }) => {
 
 export default Filter;
 
+Filter.defaultProps = {
+  filter: '',
+};
+
 Filter.propTypes = {
-  filterQuery: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
 };
