@@ -1,25 +1,25 @@
-import { useState, useCallback } from 'react';
 import { shallowEqual, useDispatch, useSelector } from 'react-redux';
 import Notiflix from 'notiflix';
 
-import actionCreators from 'redux/contacts/contactsActionCreators';
-import { getContacts } from 'redux/contacts/contactsSelectors';
+import { getContacts, getFilter } from 'redux/contacts/contacts-selectors';
+import { getFilteredContacts } from 'shared/getFilteredContacts';
+import { actions } from 'redux/contacts/contacts-slice';
 
 import Phonebook from 'components/Phonebook';
 import ContactList from 'components/ContactList';
 import Filter from 'components/Filter';
 
 const App = () => {
-  const [filter, setFilter] = useState('');
-
   const contacts = useSelector(getContacts, shallowEqual);
-  console.log(contacts);
+  const filter = useSelector(getFilter, shallowEqual);
+
   const dispatch = useDispatch();
 
-  const addContact = contact => {
-    const action = actionCreators.addContact(contact);
+  const addNewContact = contact => {
+    const action = actions.add(contact);
+    const isDuplicated = contacts.find(({ name }) => name === contact.name);
 
-    if (contacts.find(({ name }) => name === contact.name)) {
+    if (isDuplicated) {
       Notiflix.Report.warning('Oops', 'You already have this contact');
       return;
     }
@@ -27,27 +27,19 @@ const App = () => {
     dispatch(action);
   };
 
-  const removeContact = id => {
-    const action = actionCreators.deleteContact(id);
+  const changeFilter = ({ target }) => {
+    const action = actions.setFilter(target.value);
 
     dispatch(action);
   };
 
-  const changeFilter = useCallback(({ target }) => setFilter(target.value), []);
+  const removeContact = id => {
+    const action = actions.delete(id);
 
-  const getFilteredContacts = () => {
-    if (!filter) {
-      return contacts;
-    }
-    const searchedName = filter.toLowerCase();
-    const filteredContacts = contacts.filter(({ name }) =>
-      name.toLowerCase().includes(searchedName),
-    );
-
-    return filteredContacts;
+    dispatch(action);
   };
 
-  const filteredContacts = getFilteredContacts();
+  const filteredContacts = getFilteredContacts(filter, contacts);
   return (
     <div
       style={{
@@ -57,7 +49,7 @@ const App = () => {
       }}
     >
       <h1>Phonebook</h1>
-      <Phonebook onSubmit={addContact} />
+      <Phonebook onSubmit={addNewContact} />
       <h2
         style={{
           marginBottom: '10px',
