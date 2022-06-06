@@ -10,8 +10,7 @@ const Contact = ({ id, name, phone }) => {
   };
   return (
     <li key={id} className={styles.contactsListItem}>
-      {isSuccess &&
-        Notiflix.Notify.success(`${name} removed from your Phonebook`)}
+      {isSuccess && Notiflix.Notify.info(`${name} removed from your Phonebook`)}
       <p>
         {name}: <b>{phone}</b>
       </p>

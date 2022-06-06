@@ -26,7 +26,7 @@ const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
   console.log('После Submit: ', isSuccess);
   return (
     <div className={styles.container}>
-      {/* {isSuccess && Notiflix.Notify.success('Contact added to your phonebook!')} */}
+      {isSuccess && Notiflix.Notify.success('Contact added to your phonebook!')}
       <h1 className={styles.title}>Phonebook</h1>
       <form className={styles.form} action="" onSubmit={handleSubmit}>
         <label htmlFor="">Name</label>
