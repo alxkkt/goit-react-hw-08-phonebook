@@ -1,0 +1,27 @@
+.deleteBtn {
+  display: inline-block;
+  padding: 5px;
+  margin-left: 20px;
+
+  border-radius: 4px;
+  border: 0.5px solid #212121;
+  background-color: gray;
+  color: white;
+  cursor: pointer;
+}
+
+.deleteBtn:disabled {
+  background-color: gainsboro;
+  color: aliceblue;
+}
+
+.contactsListItem {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contactsListItem:not(:last-child) {
+  margin-bottom: 10px;
+}
