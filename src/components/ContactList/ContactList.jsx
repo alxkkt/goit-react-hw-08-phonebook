@@ -12,7 +12,7 @@ const ContactList = ({ contacts }) => {
     <>
       <section className={styles.contacts}>
         {contacts.length === 0 ? (
-          <p>Не найдено контактов с таким именем!</p>
+          <p>We couldn't find any contact with this name &#128532;</p>
         ) : (
           <ol className={styles.contactsList}>{elements}</ol>
         )}

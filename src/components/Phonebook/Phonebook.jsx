@@ -17,10 +17,10 @@ const Phonebook = () => {
   const [filter, setFilter] = useState('');
 
   const { data, error, isLoading } = useGetContactsQuery();
+
   const [createContact, { isLoading: isFetching, isSuccess }] =
     useCreateContactMutation();
 
-  console.log('Inside Phpnebook: ', isSuccess);
   const filteredContacts = getFilteredContacts(filter, data);
 
   const showContacts = data && !isLoading & !error;
@@ -34,7 +34,7 @@ const Phonebook = () => {
         isSuccess={isSuccess}
       />
       <Filter handleChange={setFilter} />
-      {isLoading && <LoadingIndicator />}
+      {isLoading && <LoadingIndicator segmentLength={5} segmentWidth={5} />}
       {showContacts && <ContactList contacts={filteredContacts} />}
     </div>
   );

@@ -13,17 +13,14 @@ const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
       Notiflix.Notify.warning(`You already have ${userName} in your contacts!`);
       return;
     }
-    console.log('До submit: ', isSuccess);
+
     onSubmit({
       name: userName,
       phone: e.currentTarget.elements.phone.value,
     });
 
-    console.log('Inside Submit: ', isSuccess);
-
     e.currentTarget.reset();
   };
-  console.log('После Submit: ', isSuccess);
   return (
     <div className={styles.container}>
       {isSuccess && Notiflix.Notify.success('Contact added to your phonebook!')}
