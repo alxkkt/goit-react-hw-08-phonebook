@@ -35,11 +35,6 @@ const contactsSlice = createSlice({
           },
         };
       },
-      prepare(id) {
-        return {
-          payload: id,
-        };
-      },
     },
     setFilter: {
       reducer(store, { payload }) {
