@@ -14,8 +14,8 @@ const contactsSlice = createSlice({
       reducer(store, { payload }) {
         return {
           contacts: {
+            ...store.contacts,
             items: [...store.contacts.items, payload],
-            filter: '',
           },
         };
       },
@@ -30,8 +30,8 @@ const contactsSlice = createSlice({
       reducer(store, { payload }) {
         return {
           contacts: {
+            ...store.contacts,
             items: store.contacts.items.filter(item => item.id !== payload),
-            filter: '',
           },
         };
       },
@@ -45,14 +45,9 @@ const contactsSlice = createSlice({
       reducer(store, { payload }) {
         return {
           contacts: {
-            items: store.contacts.items,
+            ...store.contacts,
             filter: payload,
           },
-        };
-      },
-      prepare(query) {
-        return {
-          payload: query,
         };
       },
     },
