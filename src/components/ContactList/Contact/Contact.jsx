@@ -1,5 +1,6 @@
 import { useDeleteContactMutation } from 'redux/contacts/contacts';
 import Notiflix from 'notiflix';
+import { memo } from 'react';
 
 import styles from './Contact.module.css';
 
@@ -26,4 +27,4 @@ const Contact = ({ id, name, phone }) => {
   );
 };
 
-export default Contact;
+export default memo(Contact);

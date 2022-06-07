@@ -1,29 +1,30 @@
-import Notiflix from 'notiflix';
 import PropTypes from 'prop-types';
+import { memo, useState } from 'react';
 
 import styles from './NewUserForm.module.css';
 
-const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
+const NewUserForm = ({ onSubmit, isLoading }) => {
+  const [state, setState] = useState({
+    name: '',
+    phone: '',
+  });
   const handleSubmit = e => {
     e.preventDefault();
 
-    const userName = e.currentTarget.elements.name.value;
-    const duplicate = data.find(({ name }) => name === userName);
-    if (duplicate) {
-      Notiflix.Notify.warning(`You already have ${userName} in your contacts!`);
-      return;
-    }
+    onSubmit(state);
 
-    onSubmit({
-      name: userName,
-      phone: e.currentTarget.elements.phone.value,
+    setState({
+      name: '',
+      phone: '',
     });
+  };
+  const handleChange = e => {
+    const { name, value } = e.target;
 
-    e.currentTarget.reset();
+    setState(prevState => ({ ...prevState, [name]: value }));
   };
   return (
     <div className={styles.container}>
-      {isSuccess && Notiflix.Notify.success('Contact added to your phonebook!')}
       <h1 className={styles.title}>Phonebook</h1>
       <form className={styles.form} action="" onSubmit={handleSubmit}>
         <label htmlFor="">Name</label>
@@ -31,6 +32,8 @@ const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
           className={styles.input}
           type="text"
           name="name"
+          value={state.name}
+          onChange={handleChange}
           pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
@@ -40,6 +43,8 @@ const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
           className={styles.input}
           type="tel"
           name="phone"
+          value={state.phone}
+          onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
@@ -52,19 +57,9 @@ const NewUserForm = ({ data, onSubmit, isLoading, isSuccess }) => {
   );
 };
 
-export default NewUserForm;
-
-NewUserForm.defaultProps = {
-  data: [],
-};
+export default memo(NewUserForm);
 
 NewUserForm.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-    }),
-  ),
   onSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-  isSuccess: PropTypes.bool.isRequired,
 };
