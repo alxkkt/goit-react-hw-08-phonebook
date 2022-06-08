@@ -7,6 +7,9 @@
 }
 
 .contactsList {
+  display: flex;
+  flex-direction: column-reverse;
+
   list-style: lower-greek;
   padding: 15px;
 }
