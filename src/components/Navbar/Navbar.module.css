@@ -1,0 +1,11 @@
+.navMenu {
+  display: flex;
+  justify-content: space-between;
+}
+
+.container {
+  padding: 15px;
+  background-color: steelblue;
+
+  border-bottom: 0.5px solid gray;
+}
