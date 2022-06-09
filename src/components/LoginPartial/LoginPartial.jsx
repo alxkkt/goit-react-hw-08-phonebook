@@ -1,20 +1,15 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useUserLoginMutation } from 'redux/auth/auth';
 import LoginForm from 'components/Forms/LoginForm';
+import GoBackButton from 'shared/components/GoBackButton';
 
 const LoginPartial = () => {
-  const location = useLocation();
-  const from = location.state?.from;
-
-  const navigate = useNavigate();
-  const goBack = () => navigate(from);
+  const [loginUser, { data }] = useUserLoginMutation();
 
   return (
     <>
-      <button type="button" onClick={goBack}>
-        Go Back
-      </button>
+      <GoBackButton />
       <p>Login if you already have an account</p>
-      <LoginForm />
+      <LoginForm onSubmit={loginUser} />
     </>
   );
 };

@@ -1,18 +1,24 @@
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
+
+import { useCreateUserMutation } from 'redux/auth/auth';
+import { initialState } from './initialState';
+
 import RegisterForm from 'components/Forms/RegisterForm';
+import GoBackButton from 'shared/components/GoBackButton';
 
 const RegisterPartial = () => {
-  const location = useLocation();
-  const from = location.state?.from;
-  const navigate = useNavigate();
-  const goBack = () => navigate(from);
+  const [user, setUser] = useState({ ...initialState });
+
+  const [createUser, { data: response }] = useCreateUserMutation();
+
+  useEffect(() => {}, [user]);
+
   return (
     <>
-      <button type="button" onClick={goBack}>
-        Go Back
-      </button>
+      <GoBackButton />
       <p>Fill the form down below to become a proud user</p>
-      <RegisterForm />
+      <RegisterForm onSubmit={setUser} />
     </>
   );
 };
