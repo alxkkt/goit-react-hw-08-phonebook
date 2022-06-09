@@ -8,9 +8,9 @@ import {
 } from 'redux/contacts/contacts';
 import { getFilteredContacts } from 'shared/getFilteredContacts';
 
-import ContactList from 'components/ContactList';
-import Filter from 'components/Filter';
-import NewUserForm from 'components/NewUserForm';
+import ContactList from './ContactList';
+import Filter from './Filter';
+import NewUserForm from './NewUserForm';
 
 import styles from './Phonebook.module.css';
 
