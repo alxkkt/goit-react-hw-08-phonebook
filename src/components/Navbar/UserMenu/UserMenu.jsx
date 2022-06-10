@@ -15,7 +15,11 @@ const UserMenu = () => {
     <>
       <span>
         Hello, {name}! |
-        <button type="button" onClick={logoutUser}>
+        <button
+          type="button"
+          onClick={logoutUser}
+          style={{ marginLeft: '10px' }}
+        >
           Logout
         </button>
       </span>
