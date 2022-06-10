@@ -5,7 +5,7 @@ import { logout } from 'redux/auth/auth-operations';
 
 const UserMenu = () => {
   const dispath = useDispatch();
-  const { name } = useSelector(getUser, shallowEqual);
+  const { email } = useSelector(getUser, shallowEqual);
 
   const logoutUser = () => {
     dispath(logout());
@@ -14,7 +14,7 @@ const UserMenu = () => {
   return (
     <>
       <span>
-        Hello, {name}! |
+        {email} |
         <button
           type="button"
           onClick={logoutUser}
