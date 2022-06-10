@@ -19,19 +19,18 @@ const Phonebook = () => {
   const isPrevSuccess = useRef(false);
 
   const { data, error, isLoading } = useGetContactsQuery();
-
   const [createContact, { isLoading: isFetching, isSuccess }] =
     useCreateContactMutation();
 
-  const addContact = ({ name, phone }) => {
-    const duplicate = data.find(item => item.name === name);
+  const addContact = userData => {
+    const duplicate = data.find(item => item.name === userData.name);
 
     if (duplicate) {
-      Notiflix.Notify.info(`${name} already exists in your contacts!`);
+      Notiflix.Notify.info(`${userData.name} already exists in your contacts!`);
       return;
     }
 
-    createContact({ name, phone });
+    createContact(userData);
   };
 
   const filteredContacts = getFilteredContacts(filter, data);
@@ -44,16 +43,15 @@ const Phonebook = () => {
 
   return (
     <div className={styles.container}>
-      <NewUserForm
-        data={data}
-        onSubmit={addContact}
-        isLoading={isFetching}
-        isSuccess={isSuccess}
-      />
+      <NewUserForm onSubmit={addContact} isLoading={isFetching} />
       <Filter handleChange={setFilter} />
       {isSuccess && !isPrevSuccess.current && showToast()}
       {isLoading && <LoadingIndicator segmentLength={5} segmentWidth={5} />}
-      {showContacts && <ContactList contacts={filteredContacts} />}
+      {showContacts ? (
+        <ContactList contacts={filteredContacts} />
+      ) : (
+        <p>Your book is empty, add someone</p>
+      )}
     </div>
   );
 };

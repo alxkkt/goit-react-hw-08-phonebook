@@ -5,8 +5,8 @@ import styles from './ContactList.module.css';
 import Contact from './Contact/Contact';
 
 const ContactList = ({ contacts }) => {
-  const elements = contacts.map(({ name, phone, id }) => (
-    <Contact name={name} phone={phone} id={id} key={id} />
+  const elements = contacts.map(({ name, number, id }) => (
+    <Contact name={name} number={number} id={id} key={id} />
   ));
   return (
     <>
@@ -31,7 +31,7 @@ ContactList.propTypes = {
   contacts: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
-      phone: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
       id: PropTypes.string.isRequired,
     }),
   ),

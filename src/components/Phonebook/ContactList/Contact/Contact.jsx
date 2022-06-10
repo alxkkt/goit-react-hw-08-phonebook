@@ -4,7 +4,7 @@ import { memo } from 'react';
 
 import styles from './Contact.module.css';
 
-const Contact = ({ id, name, phone }) => {
+const Contact = ({ id, name, number }) => {
   const [deleteContact, { isLoading, isSuccess }] = useDeleteContactMutation();
   const onDelete = id => {
     deleteContact(id);
@@ -13,7 +13,7 @@ const Contact = ({ id, name, phone }) => {
     <li key={id} className={styles.contactsListItem}>
       {isSuccess && Notiflix.Notify.info(`${name} removed from your Phonebook`)}
       <p>
-        {name}: <b>{phone}</b>
+        {name}: <b>{number}</b>
       </p>
       <button
         disabled={isLoading}

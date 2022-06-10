@@ -1,24 +1,34 @@
-import { useState, useEffect } from 'react';
-import { shallowEqual, useSelector } from 'react-redux';
-
-import { useCreateUserMutation } from 'redux/auth/auth';
-import { initialState } from './initialState';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 
 import RegisterForm from 'components/Forms/RegisterForm';
 import GoBackButton from 'shared/components/GoBackButton';
 
+import { signup } from 'redux/auth/auth-operations';
+import useLogin from 'shared/hooks/useLogin';
+
 const RegisterPartial = () => {
-  const [user, setUser] = useState({ ...initialState });
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const [createUser, { data: response }] = useCreateUserMutation();
+  const isLogged = useLogin();
 
-  useEffect(() => {}, [user]);
+  useEffect(() => {
+    if (isLogged) {
+      navigate('/contacts');
+    }
+  }, [dispatch, isLogged, navigate]);
+
+  const registerUser = data => {
+    dispatch(signup(data));
+  };
 
   return (
     <>
       <GoBackButton />
       <p>Fill the form down below to become a proud user</p>
-      <RegisterForm onSubmit={setUser} />
+      <RegisterForm onSubmit={registerUser} />
     </>
   );
 };

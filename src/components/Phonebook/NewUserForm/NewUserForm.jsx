@@ -6,7 +6,7 @@ import styles from './NewUserForm.module.css';
 const NewUserForm = ({ onSubmit, isLoading }) => {
   const [state, setState] = useState({
     name: '',
-    phone: '',
+    number: '',
   });
   const handleSubmit = e => {
     e.preventDefault();
@@ -15,7 +15,7 @@ const NewUserForm = ({ onSubmit, isLoading }) => {
 
     setState({
       name: '',
-      phone: '',
+      number: '',
     });
   };
   const handleChange = e => {
@@ -42,8 +42,8 @@ const NewUserForm = ({ onSubmit, isLoading }) => {
         <input
           className={styles.input}
           type="tel"
-          name="phone"
-          value={state.phone}
+          name="number"
+          value={state.number}
           onChange={handleChange}
           pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
