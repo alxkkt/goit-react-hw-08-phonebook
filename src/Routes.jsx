@@ -1,18 +1,26 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import HomePage from 'pages/HomePage';
 import RegisterPartial from 'components/RegisterPartial';
 import LoginPartial from 'components/LoginPartial';
-import Phonebook from 'components/Phonebook';
+import ContactsPage from 'pages/ContactsPage';
+
+import PrivateRoute from 'shared/components/PrivateRoute';
+import PublicRoute from 'shared/components/PublicRoute';
 
 const MyRoutes = () => {
   return (
     <Routes>
       <Route path="/home" element={<HomePage />}>
-        <Route path="register" element={<RegisterPartial />} />
-        <Route path="login" element={<LoginPartial />} />
+        <Route element={<PublicRoute />}>
+          <Route path="register" element={<RegisterPartial />} />
+          <Route path="login" element={<LoginPartial />} />
+        </Route>
       </Route>
-      <Route path="/contacts" element={<Phonebook />} />
+      <Route element={<PrivateRoute />}>
+        <Route path="/contacts" element={<ContactsPage />} />
+      </Route>
+      <Route path="*" element={<Navigate to="/home" replace />} />
     </Routes>
   );
 };

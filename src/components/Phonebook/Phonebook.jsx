@@ -11,6 +11,7 @@ import { getFilteredContacts } from 'shared/getFilteredContacts';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import NewUserForm from './NewUserForm';
+import ShowErrorNotification from 'shared/components/ShowErrorNotification';
 
 import styles from './Phonebook.module.css';
 
@@ -18,9 +19,10 @@ const Phonebook = () => {
   const [filter, setFilter] = useState('');
   const isPrevSuccess = useRef(false);
 
-  const { data, error, isLoading } = useGetContactsQuery();
+  const { data, isLoading, isError, error } = useGetContactsQuery();
   const [createContact, { isLoading: isFetching, isSuccess }] =
     useCreateContactMutation();
+  const errorMsg = error?.data?.message;
 
   const addContact = userData => {
     const duplicate = data.find(item => item.name === userData.name);
@@ -35,7 +37,16 @@ const Phonebook = () => {
 
   const filteredContacts = getFilteredContacts(filter, data);
 
-  const showContacts = data && !isLoading & !error;
+  const isData = Boolean(data?.length) && !isLoading & !isError;
+  const showContent = () => {
+    const content = isData ? (
+      <ContactList contacts={filteredContacts} />
+    ) : (
+      <h3>Your phonebook is empty, add user to begin</h3>
+    );
+    return content;
+  };
+
   const showToast = () => {
     isPrevSuccess.current = true;
     return Notiflix.Notify.success('Contact added to your phonebook!');
@@ -45,13 +56,10 @@ const Phonebook = () => {
     <div className={styles.container}>
       <NewUserForm onSubmit={addContact} isLoading={isFetching} />
       <Filter handleChange={setFilter} />
-      {isSuccess && !isPrevSuccess.current && showToast()}
       {isLoading && <LoadingIndicator segmentLength={5} segmentWidth={5} />}
-      {showContacts ? (
-        <ContactList contacts={filteredContacts} />
-      ) : (
-        <p>Your book is empty, add someone</p>
-      )}
+      {showContent()}
+      {isSuccess && !isPrevSuccess.current && showToast()}
+      {isError && <ShowErrorNotification msg={errorMsg} />}
     </div>
   );
 };

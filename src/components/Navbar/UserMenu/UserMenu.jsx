@@ -14,7 +14,7 @@ const UserMenu = () => {
   return (
     <>
       <span>
-        {name} |
+        Hello, {name}! |
         <button type="button" onClick={logoutUser}>
           Logout
         </button>

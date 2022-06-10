@@ -13,7 +13,7 @@ const Navbar = () => {
     <header className={s.container}>
       <nav className={s.navMenu}>
         <Link to="/home">Logo</Link>
-        <NavbarMenu />
+        <NavbarMenu isLogged={isLogin} />
         {isLogin && <UserMenu />}
       </nav>
     </header>
